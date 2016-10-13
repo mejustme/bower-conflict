@@ -4,10 +4,7 @@
   "description": "bower 依赖冲突可视化",
   "main": "index.js",
   "bin": {
-    "bower-view": "bower-view.js"
-  },
-  "scripts": {
-    "test": "bower-view"
+    "bower-view": "bin/bower-conflict-view.js"
   },
   "repository": {
     "type": "git",
