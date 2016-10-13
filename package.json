@@ -11,14 +11,16 @@
     "url": "git+https://github.com/mejustme/bower-conflict-view.git"
   },
   "keywords": [
-    "bower",
-    "conflit",
-    "view"
+    "bower conflict view",
+    "bower resolve conflict"
   ],
   "author": "mejustme",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mejustme/bower-conflict-view/issues"
   },
-  "homepage": "https://github.com/mejustme/bower-conflict-view#readme"
+  "homepage": "https://github.com/mejustme/bower-conflict-view#readme",
+  "dependencies": {
+    "bower": "^1.7.9"
+  }
 }
