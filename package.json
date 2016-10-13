@@ -1,0 +1,27 @@
+{
+  "name": "bower-conflict-view",
+  "version": "1.0.0",
+  "description": "bower 依赖冲突可视化",
+  "main": "index.js",
+  "bin": {
+    "bower-view": "bower-view.js"
+  },
+  "scripts": {
+    "test": "bower-view"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mejustme/bower-conflict-view.git"
+  },
+  "keywords": [
+    "bower",
+    "conflit",
+    "view"
+  ],
+  "author": "mejustme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mejustme/bower-conflict-view/issues"
+  },
+  "homepage": "https://github.com/mejustme/bower-conflict-view#readme"
+}
