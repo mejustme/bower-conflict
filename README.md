@@ -1,1 +1,1 @@
-# bower-conflict-view
+# bower-conflict
