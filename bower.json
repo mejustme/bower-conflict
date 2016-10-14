@@ -1,0 +1,29 @@
+{
+  "name": "bower-conflict",
+  "description": "bower 依赖冲突可视化",
+  "main": "index.js",
+  "authors": [
+    "mejustme"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "bower",
+    "conflict",
+    "view",
+    "bower",
+    "resolve",
+    "conflict"
+  ],
+  "homepage": "https://github.com/mejustme/bower-conflict",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "echarts": "2.2.7",
+    "regularjs": "^0.5.2"
+  }
+}
