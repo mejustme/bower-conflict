@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+        <title>ECharts</title>
+        </head>
+        <body>
+            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+            <!-- ECharts单文件引入 -->
+            <script src="lib/regularjs/dist/regular.js"></script>
+            <script src="lib/echarts/build/dist/echarts.js"></script>
+        <script id="template" type="application/template">
+            <h3>{#inc info}</h3>
+        </script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: 'lib/echarts/build/dist',
+            data: '.'
+        }
+    });
+    // 使用
+    require(
+            [
+                'echarts',
+                'echarts/chart/chord' ,// 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/force' ,// 使用柱状图就加载bar模块，按需加载
+                'data/needAll'
+            ],
+            function (ec,chord,force,needAll) {
+
+                var UI = Regular.extend({
+                    template: '#template'
+                }).filter({
+                    toText: function(needAll){
+                        var names = Object.keys(needAll);
+                        return names.length + "个组件有版本冲突，分别是： " + names.join('、')
+                    }
+                });
+
+                new UI({
+                    data: {
+                        info: "注意，一共有{needAll| toText}",
+                        needAll: needAll
+                    },
+                    config: function(){
+                        console.log()
+
+                    }
+                }).$inject(document.body);
+
+                var index = 0;
+                for (var componentName in needAll) {
+                    var option = {
+                        title: {
+                            text: componentName + '冲突',
+                            x: 'top',
+                            y: 'right'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                if (params.indicator2) {    // is edge
+                                    return params.indicator2 + ' ' + params.name + ' ' + params.indicator;
+                                } else {    // is node
+                                    return params.name
+                                }
+                            }
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                restore: {show: true},
+                                magicType: {show: true, type: ['force', 'chord']},
+                                saveAsImage: {show: true}
+                            }
+                        },
+                        legend: (function () {
+                            var legend = {
+                                x: 'left',
+                                y: '30',
+                                data: []
+                            };
+                            for (var versionName in needAll[componentName]) {
+                                legend.data.push(versionName);
+                            }
+                            return legend;
+                        })(),
+                        series: [
+                            {
+                                name: '',
+                                type: 'chord',
+                                sort: 'ascending',
+                                sortSub: 'descending',
+                                ribbonType: false,
+                                radius: '60%',
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            rotate: true
+                                        }
+                                    }
+                                },
+                                minRadius: 7,
+                                maxRadius: 20,
+                                // 使用 nodes links 表达和弦图
+                                nodes: (function () {
+                                    var nameArr = [];
+                                    for (var versionName in needAll[componentName]) {
+                                        nameArr.push({
+                                            name: versionName,
+                                            symbol: 'star',
+                                            value: 1000
+                                        });
+                                        var arr = needAll[componentName][versionName].split(',');
+                                        for (var name in arr) {
+                                            nameArr.push({
+                                                name: arr[name]
+                                            });
+                                        }
+                                    }
+
+                                    return nameArr;
+                                })(),
+                                links: (function () {
+
+                                    var linkArr = [];
+                                    for (var versionName in needAll[componentName]) {
+                                        var arr = needAll[componentName][versionName].split(',');
+                                        for (var name in arr) {
+                                            var link = {
+                                                source: versionName,
+                                                target: arr[name],
+                                                weight: 1,
+                                                name: '依赖'
+                                            };
+                                            linkArr.push(link);
+                                        }
+                                    }
+                                    return linkArr;
+                                })()
+                            }
+                        ]
+                    };
+
+                    var ele = document.createElement('div');
+                    ele.setAttribute('id',componentName);
+                    ele.setAttribute('style',"height:400px;margin:200px 200px");
+                    document.body.appendChild(ele);
+
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById(componentName));
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+                }
+
+            }
+    );
+</script>
+</body>
