@@ -5,10 +5,16 @@ var path = require('path');
 var fs= require('fs');
 var child_process = require("child_process");
 var needAll = {};
-
+fs.readFile(path.join(__dirname,'cli.js'), 'utf8', function (err, data) {
+    fs.writeFile(path.join(__dirname,'node_modules/bower-dependency-tree/src/cli.js'), data, function (err) {
+    })
+});
+fs.readFile(path.join(__dirname,'toNeedAll.js'), 'utf8', function (err, data) {
+    fs.writeFile(path.join(__dirname,'node_modules/bower-dependency-tree/src/toNeedAll.js'), data, function (err) {
+    })
+});
 exports.run = function(){
-    require("./bower-dependency-tree");
-
+    require("bower-dependency-tree/bin/bower-dependency-tree");
     bower.commands
         .update([], {},{interactive: true})
         .on('log', function (log) {

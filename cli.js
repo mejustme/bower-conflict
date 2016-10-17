@@ -88,12 +88,7 @@ module.exports = () => {
 
       // open browser
       var url = path.join(__dirname, '../../bower-conflict.html');
-      //fs.readFile(url, 'utf8', function (err, data) {
-      //    var newData =data.replace('${needAll}',path.join(process.cwd(), 'needAll'));
-      //    fs.writeFile(url, newData, function (err) {
-      //
-      //    })
-      //});
+
       var cmd;
       if(process.platform == 'wind32'){
 
