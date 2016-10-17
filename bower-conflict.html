@@ -6,8 +6,8 @@
         <body>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
             <!-- ECharts单文件引入 -->
-            <script src="lib/regularjs/dist/regular.js"></script>
-            <script src="lib/echarts/build/dist/echarts.js"></script>
+            <script src="node_modules/regularjs/dist/regular.js"></script>
+            <script src="node_modules/echarts/build/echarts.js"></script>
         <script id="template" type="application/template">
             <h3>{#inc info}</h3>
         </script>
@@ -15,7 +15,7 @@
     // 路径配置
     require.config({
         paths: {
-            echarts: 'lib/echarts/build/dist',
+            echarts: 'node_modules/echarts/build',
             data: '.'
         }
     });
