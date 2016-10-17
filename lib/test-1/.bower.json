@@ -1,0 +1,31 @@
+{
+  "name": "bower-test-1",
+  "homepage": "https://github.com/mejustme/bower-test-1",
+  "authors": [
+    "陈钦辉 <hzchenqinhui@corp.netease.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "test-2": "git+https://github.com/mejustme/bower-test-2.git#0.0.2"
+  },
+  "version": "0.0.4",
+  "_release": "0.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.4",
+    "commit": "ba8bb254b49a7ee00eb2d8ee2d3669d1d1436a1a"
+  },
+  "_source": "https://github.com/mejustme/bower-test-1.git",
+  "_target": "0.0.4",
+  "_originalSource": "git+https://github.com/mejustme/bower-test-1.git"
+}

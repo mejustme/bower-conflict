@@ -23,7 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "echarts": "2.2.7",
-    "regularjs": "^0.5.2"
+    "regularjs": "^0.5.2",
+    "echarts": "2.2.7"
   }
 }

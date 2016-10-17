@@ -1,0 +1,21 @@
+{
+  "name": "bower-test-3",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "陈钦辉 <hzchenqinhui@corp.netease.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/mejustme/bower-test-3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "test-4": "git+https://github.com/mejustme/bower-test-4.git#0.0.1"
+  }
+}

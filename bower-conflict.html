@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-        <title>ECharts</title>
+        <title>bower-conflict</title>
         </head>
         <body>
             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -23,8 +23,8 @@
     require(
             [
                 'echarts',
-                'echarts/chart/chord' ,// 使用柱状图就加载bar模块，按需加载
-                'echarts/chart/force' ,// 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/chord',
+                'echarts/chart/force',
                 'data/needAll'
             ],
             function (ec,chord,force,needAll) {
@@ -145,12 +145,10 @@
 
                     var ele = document.createElement('div');
                     ele.setAttribute('id',componentName);
-                    ele.setAttribute('style',"height:400px;margin:200px 200px");
+                    ele.setAttribute('style',"height:400px;margin:200px 0px");
                     document.body.appendChild(ele);
 
-                    // 基于准备好的dom，初始化echarts图表
                     var myChart = ec.init(document.getElementById(componentName));
-                    // 为echarts对象加载数据
                     myChart.setOption(option);
                 }
 

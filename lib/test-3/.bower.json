@@ -1,0 +1,30 @@
+{
+  "name": "bower-test-3",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "陈钦辉 <hzchenqinhui@corp.netease.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/mejustme/bower-test-3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "test-4": "git+https://github.com/mejustme/bower-test-4.git#0.0.1"
+  },
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.1",
+    "commit": "f7b25dfdcaf252b94b6b700cd643de69e66cd00e"
+  },
+  "_source": "https://github.com/mejustme/bower-test-3.git",
+  "_target": "0.0.1",
+  "_originalSource": "git+https://github.com/mejustme/bower-test-3.git"
+}

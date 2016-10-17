@@ -22,6 +22,6 @@
   "homepage": "https://github.com/mejustme/bower-conflict#readme",
   "dependencies": {
     "bower": "1.7.9",
-    "puer": "^1.1.1"
+    "inquirer": "^1.2.2"
   }
 }
