@@ -32,30 +32,7 @@ exports.run = function(){
 
         })
         .on('end', function (installed) {
-
-            var url = path.join(__dirname, 'bower-conflict.html');
-
-            //fs.readFile(url, 'utf8', function (err, data) {
-            //    var newData =data.replace('${needAll}',path.join(process.cwd(), 'needAll'));
-            //    fs.writeFile(url, newData, function (err) {
-            //
-            //    })
-            //});
-            var cmd;
-            if(process.platform == 'wind32'){
-
-                cmd  = 'start "%ProgramFiles%\Internet Explorer\iexplore.exe"';
-
-            }else if(process.platform == 'linux'){
-
-                cmd  = 'xdg-open';
-
-            }else if(process.platform == 'darwin'){
-
-                cmd  = 'open';
-
-            }
-            child_process.exec(cmd + ' "'+url + '"');
+            // open browser in dependency-tree
         })
         .on('prompt', function (prompts, callback) {
             inquirer.prompt(prompts)

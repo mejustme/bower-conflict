@@ -9,6 +9,8 @@ var explicitRange = require('./explicit-range');
 var rangeComparator = require('./range-comparator');
 var bowerConfig = require('./bower-config');
 var toNeedALL = require('./toNeedAll');
+var child_process = require("child_process");
+var path = require('path');
 
 var sortByName = (arr) => stable(arr, (l, r) => l.name.localeCompare(r.name));
 
@@ -83,6 +85,30 @@ module.exports = () => {
     .then((pkg) => {
       var cpkg = consolidate(pkg);
       toNeedALL(pkg)
+
+      // open browser
+      var url = path.join(__dirname, '../../bower-conflict.html');
+      //fs.readFile(url, 'utf8', function (err, data) {
+      //    var newData =data.replace('${needAll}',path.join(process.cwd(), 'needAll'));
+      //    fs.writeFile(url, newData, function (err) {
+      //
+      //    })
+      //});
+      var cmd;
+      if(process.platform == 'wind32'){
+
+        cmd  = 'start "%ProgramFiles%\Internet Explorer\iexplore.exe"';
+
+      }else if(process.platform == 'linux'){
+
+        cmd  = 'xdg-open';
+
+      }else if(process.platform == 'darwin'){
+
+        cmd  = 'open';
+
+      }
+      child_process.exec(cmd + ' "'+url + '"');
       //if (!argv.grep || grep(cpkg, argv.grep)) {
       //  console.log();
       //  tree(cpkg);
