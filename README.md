@@ -3,10 +3,10 @@
 > Front end visualization bower dependency and conflict
 
 ### how to use
-- npm install bower-conflict
+- npm install bower-conflict -g
 - cd to the your project
 - run bower-conflict
-- it will open browser Automatically
+- it will open browser automatically
 
 ### bower dependency tree (red color is conflict)
 ![1](res/img/2.png)
