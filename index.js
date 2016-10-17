@@ -7,6 +7,8 @@ var child_process = require("child_process");
 var needAll = {};
 
 exports.run = function(){
+    require("bower-dependency-tree");
+
     bower.commands
         .update([], {},{interactive: true})
         .on('log', function (log) {

@@ -3,14 +3,41 @@
 <meta charset="utf-8">
         <title>bower-conflict</title>
         </head>
-        <body>
-            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-            <!-- ECharts单文件引入 -->
-            <script src="node_modules/regularjs/dist/regular.js"></script>
-            <script src="node_modules/echarts/build/echarts.js"></script>
-        <script id="template" type="application/template">
-            <h3>{#inc info}</h3>
-        </script>
+<style>
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node {
+        font: 12px sans-serif;
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+</style>
+
+<body>
+<script src="node_modules/regularjs/dist/regular.js"></script>
+<script src="node_modules/echarts/build/echarts.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script id="template" type="application/tpl">
+    {#if needAll.allConflict.length}
+         <h2> 注意，一共有{needAll.allConflict.length}个组件有版本冲突，分别是：{needAll.allConflict | arr2Text}</h2>
+    {#list needAll.allConflict as item}
+         <input type="button" value="{item}" on-click={this.doClick(item)} />
+    {/list}
+        <input type="button" value="all" on-click={this.doClick('#')} />
+    {/if}
+    {#if needAll.allCircularDependency.length}
+         <h2>注意，一共有{needAll.allCircularDependency.length}个组件循环依赖，分别是：{needAll.allCircularDependency | arr2Text}</h2>
+    {/if}
+</script>
+<div id="conclusion"></div>
 <script type="text/javascript">
     // 路径配置
     require.config({
@@ -19,140 +46,207 @@
             data: '.'
         }
     });
-    // 使用
-    require(
-            [
-                'echarts',
-                'echarts/chart/chord',
-                'echarts/chart/force',
-                'data/needAll'
-            ],
-            function (ec,chord,force,needAll) {
 
-                var UI = Regular.extend({
-                    template: '#template'
-                }).filter({
-                    toText: function(needAll){
-                        var names = Object.keys(needAll);
-                        return names.length + "个组件有版本冲突，分别是： " + names.join('、')
+    var width = 2000,
+            height = 2000;
+    var tree = d3.layout.tree()
+            .size([width, height-200])
+            .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2); });
+
+    var diagonal = d3.svg.diagonal()
+            .projection(function(d) { return [d.y, d.x]; });
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(40,0)");
+
+    require(['data/treeJson'],function(root){
+
+        var UI = Regular.extend({
+            template: '#template'
+        }).filter({
+            arr2Text: function(arr){
+                return arr.join('、');
+            }
+        });
+
+        new UI({
+            data: {
+                needAll: root
+            },
+            doClick: function(name){
+                var text = svg.selectAll(".node text");
+                text.style("fill", function(d){
+                    if(d.conflict && d.conflict.length && d.name.indexOf(name) != -1){
+                        return 'red'
+                    }else {
+                        return 'black'
                     }
-                });
-
-                new UI({
-                    data: {
-                        info: "注意，一共有{needAll| toText}",
-                        needAll: needAll
-                    },
-                    config: function(){
-                        console.log()
-
-                    }
-                }).$inject(document.body);
-
-                var index = 0;
-                for (var componentName in needAll) {
-                    var option = {
-                        title: {
-                            text: componentName + '冲突',
-                            x: 'top',
-                            y: 'right'
-                        },
-                        tooltip: {
-                            trigger: 'item',
-                            formatter: function (params) {
-                                if (params.indicator2) {    // is edge
-                                    return params.indicator2 + ' ' + params.name + ' ' + params.indicator;
-                                } else {    // is node
-                                    return params.name
-                                }
-                            }
-                        },
-                        toolbox: {
-                            show: true,
-                            feature: {
-                                restore: {show: true},
-                                magicType: {show: true, type: ['force', 'chord']},
-                                saveAsImage: {show: true}
-                            }
-                        },
-                        legend: (function () {
-                            var legend = {
-                                x: 'left',
-                                y: '30',
-                                data: []
-                            };
-                            for (var versionName in needAll[componentName]) {
-                                legend.data.push(versionName);
-                            }
-                            return legend;
-                        })(),
-                        series: [
-                            {
-                                name: '',
-                                type: 'chord',
-                                sort: 'ascending',
-                                sortSub: 'descending',
-                                ribbonType: false,
-                                radius: '60%',
-                                itemStyle: {
-                                    normal: {
-                                        label: {
-                                            rotate: true
-                                        }
-                                    }
-                                },
-                                minRadius: 7,
-                                maxRadius: 20,
-                                // 使用 nodes links 表达和弦图
-                                nodes: (function () {
-                                    var nameArr = [];
-                                    for (var versionName in needAll[componentName]) {
-                                        nameArr.push({
-                                            name: versionName,
-                                            symbol: 'star',
-                                            value: 1000
-                                        });
-                                        var arr = needAll[componentName][versionName].split(',');
-                                        for (var name in arr) {
-                                            nameArr.push({
-                                                name: arr[name]
-                                            });
-                                        }
-                                    }
-
-                                    return nameArr;
-                                })(),
-                                links: (function () {
-
-                                    var linkArr = [];
-                                    for (var versionName in needAll[componentName]) {
-                                        var arr = needAll[componentName][versionName].split(',');
-                                        for (var name in arr) {
-                                            var link = {
-                                                source: versionName,
-                                                target: arr[name],
-                                                weight: 1,
-                                                name: '依赖'
-                                            };
-                                            linkArr.push(link);
-                                        }
-                                    }
-                                    return linkArr;
-                                })()
-                            }
-                        ]
-                    };
-
-                    var ele = document.createElement('div');
-                    ele.setAttribute('id',componentName);
-                    ele.setAttribute('style',"height:400px;margin:200px 0px");
-                    document.body.appendChild(ele);
-
-                    var myChart = ec.init(document.getElementById(componentName));
-                    myChart.setOption(option);
-                }
+                })
 
             }
+        }).$inject('#conclusion');
+
+        var nodes = tree.nodes(root);
+        var links = tree.links(nodes);
+
+//            console.log(nodes);
+//            console.log(links);
+
+        var link = svg.selectAll(".link")
+                .data(links)
+                .enter()
+                .append("path")
+                .attr("class", "link")
+                .attr("d", diagonal);
+
+        var node = svg.selectAll(".node")
+                .data(nodes)
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+        node.append("circle")
+                .attr("r", 4.5);
+
+        node.append("text")
+                .attr("dx", function(d) {
+                    if(!d.parent){
+                        return 150;
+                    }
+                    return d.children ? -8 : 8;
+                })
+                .attr("dy", 3)
+                .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+                .text(function(d) {
+                    if(d.conflict && d.conflict.length){
+                        return d.name + '冲突版本：' + d.conflict.join('、')
+                    }
+                    return d.name;
+                })
+                .style("fill", function(d){
+                    if(d.conflict && d.conflict.length){
+                        return 'red'
+                    }
+                })
+})
+</script>
+<script type="text/javascript">
+    // 使用
+    require([
+            'echarts',
+            'echarts/chart/chord',
+            'echarts/chart/force',
+            'data/needAll'
+        ],
+        function (ec,chord,force,needAll) {
+
+            for (var componentName in needAll) {
+                var option = {
+                    title: {
+                        text: componentName + '冲突',
+                        x: 'top',
+                        y: 'right'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (params) {
+                            if (params.indicator2) {    // is edge
+                                return params.indicator2 + ' ' + params.name + ' ' + params.indicator;
+                            } else {    // is node
+                                return params.name
+                            }
+                        }
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            restore: {show: true},
+                            magicType: {show: true, type: ['force', 'chord']},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend: (function () {
+                        var legend = {
+                            x: 'left',
+                            y: '30',
+                            data: []
+                        };
+                        for (var versionName in needAll[componentName]) {
+                            legend.data.push(versionName);
+                        }
+                        return legend;
+                    })(),
+                    series: [
+                        {
+                            name: '',
+                            type: 'chord',
+                            sort: 'ascending',
+                            sortSub: 'descending',
+                            ribbonType: false,
+                            radius: '60%',
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        rotate: true
+                                    }
+                                }
+                            },
+                            minRadius: 7,
+                            maxRadius: 20,
+                            // 使用 nodes links 表达和弦图
+                            nodes: (function () {
+                                var nameArr = [];
+                                for (var versionName in needAll[componentName]) {
+                                    nameArr.push({
+                                        name: versionName,
+                                        symbol: 'star',
+                                        value: 1000
+                                    });
+                                    var arr = needAll[componentName][versionName].split(',');
+                                    for (var name in arr) {
+                                        nameArr.push({
+                                            name: arr[name]
+                                        });
+                                    }
+                                }
+
+                                return nameArr;
+                            })(),
+                            links: (function () {
+
+                                var linkArr = [];
+                                for (var versionName in needAll[componentName]) {
+                                    var arr = needAll[componentName][versionName].split(',');
+                                    for (var name in arr) {
+                                        var link = {
+                                            source: versionName,
+                                            target: arr[name],
+                                            weight: 1,
+                                            name: '依赖'
+                                        };
+                                        linkArr.push(link);
+                                    }
+                                }
+                                return linkArr;
+                            })()
+                        }
+                    ]
+                };
+
+                var ele = document.createElement('div');
+                ele.setAttribute('id',componentName);
+                ele.setAttribute('style',"height:400px;margin:200px 0px");
+                document.body.appendChild(ele);
+
+                var myChart = ec.init(document.getElementById(componentName));
+                myChart.setOption(option);
+            }
+
+        }
     );
 </script>
 </body>
