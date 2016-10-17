@@ -89,21 +89,12 @@ module.exports = () => {
       // open browser
       var url = path.join(__dirname, '../../../bower-conflict.html');
 
-      var cmd;
-      if(process.platform == 'wind32'){
+      var open = require('open');
 
-        cmd  = 'start "%ProgramFiles%\Internet Explorer\iexplore.exe"';
-
-      }else if(process.platform == 'linux'){
-
-        cmd  = 'xdg-open';
-
-      }else if(process.platform == 'darwin'){
-
-        cmd  = 'open';
-
-      }
-      child_process.exec(cmd + ' "'+url + '"');
+      open(url, function (err) {
+        if (err) throw err;
+        console.log('The user closed the browser');
+      });
       //if (!argv.grep || grep(cpkg, argv.grep)) {
       //  console.log();
       //  tree(cpkg);

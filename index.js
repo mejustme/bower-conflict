@@ -15,6 +15,14 @@ fs.readFile(path.join(__dirname,'toNeedAll.js'), 'utf8', function (err, data) {
 });
 exports.run = function(){
     setTimeout(function(){
+        // delete data
+        fs.writeFile(path.join(__dirname, 'needAll.js'), "define([], function (){ return" + JSON.stringify({}) +  "});", function (err) {
+            if (err) throw err;
+        });
+        fs.writeFile(path.join(__dirname, 'treeJson.js'),  "define([], function (){ return" + JSON.stringify({}) +  "});", function (err) {
+            if (err) throw err;
+        });
+
         require("bower-dependency-tree/bin/bower-dependency-tree");
         bower.commands
             .update([], {},{interactive: true})
@@ -49,7 +57,7 @@ exports.run = function(){
             })
             .on('error', function (errors) {
             })
-    },1000)
+    },500)
 
 };
 
