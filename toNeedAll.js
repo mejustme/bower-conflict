@@ -50,7 +50,7 @@ module.exports = function(preData){
   resultData = doSingle(preData);
   resultData.allConflict = allConflict;
   resultData.allCircularDependency = allCircularDependency;
-  fs.writeFile(path.join(__dirname, '../../treeJson.js'),  "define([], function (){ return" + JSON.stringify(resultData) +  "});", function (err) {
+  fs.writeFile(path.join(__dirname, '../../../treeJson.js'),  "define([], function (){ return" + JSON.stringify(resultData) +  "});", function (err) {
     if (err) throw err;
   });
   return resultData

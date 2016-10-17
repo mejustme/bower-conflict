@@ -87,7 +87,7 @@ module.exports = () => {
       toNeedALL(pkg)
 
       // open browser
-      var url = path.join(__dirname, '../../bower-conflict.html');
+      var url = path.join(__dirname, '../../../bower-conflict.html');
 
       var cmd;
       if(process.platform == 'wind32'){

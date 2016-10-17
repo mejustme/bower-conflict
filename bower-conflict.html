@@ -22,8 +22,8 @@
 </style>
 
 <body>
-<script src="node_modules/regularjs/dist/regular.js"></script>
-<script src="node_modules/echarts/build/echarts.js"></script>
+<script src="./node_modules/regularjs/dist/regular.js"></script>
+<script src="./node_modules/echarts/build/echarts.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script id="template" type="application/tpl">
     {#if needAll.allConflict.length}
@@ -42,7 +42,7 @@
     // 路径配置
     require.config({
         paths: {
-            echarts: 'node_modules/echarts/build',
+            echarts: './node_modules/echarts/build',
             data: '.'
         }
     });

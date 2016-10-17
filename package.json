@@ -1,6 +1,6 @@
 {
   "name": "bower-conflict",
-  "version": "0.2.7",
+  "version": "0.2.15",
   "description": "bower 依赖冲突可视化",
   "main": "index.js",
   "bin": {
@@ -25,6 +25,7 @@
     "bower": "1.7.9",
     "bower-dependency-tree": "0.1.2",
     "inquirer": "^1.2.2",
-    "regularjs": "^0.5.2"
+    "regularjs": "^0.5.2",
+    "echarts": "2.2.8"
   }
 }
