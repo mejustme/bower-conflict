@@ -21,6 +21,10 @@ function doSingle(obj,isDev){
       allConflict.push(obj.name);
     }
     for(key in  obj.failedToSatisfy){
+      if(obj.failedToSatisfy[key].indexOf('nej') != -1){
+
+      }
+      console.log(obj.failedToSatisfy[key])
       arr.push(obj.failedToSatisfy[key].substr(1))
     }
     need.conflict= arr;
