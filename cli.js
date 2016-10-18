@@ -93,7 +93,6 @@ module.exports = () => {
 
       open(url, function (err) {
         if (err) throw err;
-        console.log('The user closed the browser');
       });
       //if (!argv.grep || grep(cpkg, argv.grep)) {
       //  console.log();
