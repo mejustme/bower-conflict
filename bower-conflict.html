@@ -32,6 +32,8 @@
          <input type="button" value="{item}" on-click={this.doClick(item)} />
     {/list}
         <input type="button" value="all" on-click={this.doClick('#')} />
+    {#elseif}
+        <h2>好开心！没有冲突</h2>
     {/if}
     {#if needAll.allCircularDependency.length}
          <h2>注意，一共有{needAll.allCircularDependency.length}个组件循环依赖，分别是：{needAll.allCircularDependency | arr2Text}</h2>

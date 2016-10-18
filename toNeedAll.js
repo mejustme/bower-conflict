@@ -6,9 +6,10 @@ var allConflict = [];
 var allCircularDependency = [];
 
 function doSingle(obj,isDev){
+
   var need = {};
   var key;
-  need.name = obj.name + '#' + obj.version;
+  need.name = obj.name + '#' + obj.endpoint.split('#')[1];
   need.isDevDependencies = isDev;
   need.children = [];
 

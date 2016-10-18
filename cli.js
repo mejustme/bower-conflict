@@ -84,8 +84,7 @@ module.exports = () => {
     })
     .then((pkg) => {
       var cpkg = consolidate(pkg);
-      toNeedALL(pkg)
-
+      toNeedALL(cpkg)
       // open browser
       var url = path.join(__dirname, '../../../bower-conflict.html');
 
