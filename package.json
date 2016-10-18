@@ -1,6 +1,6 @@
 {
   "name": "bower-conflict",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "description": "bower 依赖冲突可视化",
   "main": "index.js",
   "bin": {
